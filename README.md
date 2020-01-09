@@ -48,6 +48,6 @@ mvn clean verify
 
 #### Bônus
 Será considerado um plus os candidatos que entregarem:
-- Testes unitários e de integração das funconalidades desenvolvidas;
+- Testes unitários e de integração das funcionalidades desenvolvidas;
 - Bom uso dos padrões de REST;
 - Um `docker-compose.yml` funcional para execução da aplicação. (Banco de Dados + API)
