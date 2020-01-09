@@ -1,7 +1,7 @@
 # Teste Programador Backend Júnior
 Teste destinado aos candidatos a vaga de Programador Backend <b>Júnior</b>. Se o seu nível é outro, por favor, dê uma olhada nos demais repositórios e escolha o que se adequa a sua skill. 
-- [@brainweb-interview-pleno](https://github.com/brainweb-br/brainweb-interview-pleno)
-- @brainweb-interview-senior
+- [@brainweb-interview-pleno](https://github.com/brainweb-br/interview-pleno)
+- [@brainweb-interview-senior](https://github.com/brainweb-br/interview-senior)
 
 ## Descrição
 Um cliente chamado Bruce Wayne nos contratou para fazer um sistema com o objetivo de catalogar os super-heróis existentes.
