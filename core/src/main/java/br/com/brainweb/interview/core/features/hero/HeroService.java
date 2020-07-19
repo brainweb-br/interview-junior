@@ -5,6 +5,7 @@ import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +22,16 @@ public class HeroService {
 
     @Transactional
     public UUID create(CreateHeroRequest createHeroRequest) {
-
         UUID poweStatsId = this.powerStatsService.create(new PowerStats(createHeroRequest));
         return heroRepository.create(new Hero(createHeroRequest, poweStatsId));
+    }
+
+    public Optional<Hero> getById(UUID id) {
+        try {
+            Hero hero = this.heroRepository.findById(id);
+            return Optional.of(hero);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 }
