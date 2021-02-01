@@ -35,6 +35,10 @@ public class HeroController {
 		
 		HeroDTO dto = hservice.findHeroById(id);
 		
+		if(dto.getId() == null) {
+			return ResponseEntity.notFound().build();
+		}
+		
 		return ResponseEntity.status(HttpStatus.OK).body(dto);
 		
 		/* 
@@ -99,8 +103,13 @@ public class HeroController {
 	
 	@PutMapping("/updateHero")
 	public ResponseEntity<?> updateHeroData(@RequestBody HeroDTO dto) {
+		
 		hservice.updateHero(dto);
 		
+		if(dto.getId() == null) {
+			return ResponseEntity.notFound().build();
+		}
+			
 		return  ResponseEntity.status(HttpStatus.OK).body("Heroi Atualizado!");
 	}
 	
