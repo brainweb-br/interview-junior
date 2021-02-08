@@ -38,6 +38,11 @@ public class ExceptionAdvice {
     ResponseEntity<Object> handleInvalidRequest(Exception e) {
         return status(BAD_REQUEST).body(e.getMessage());
     }
+    
+    @ExceptionHandler(value = {IllegalArgumentException.class, MethodArgumentTypeMismatchException.class})
+    ResponseEntity<Object> handleNotFoundExcpetion(Exception e) {
+        return status(NOT_FOUND).body(e.getMessage());
+    }
 
     @ExceptionHandler(value = {InvalidFormatException.class, HttpMessageNotReadableException.class})
     ResponseEntity<Object> handleInvalidFormatException(Exception e) {
