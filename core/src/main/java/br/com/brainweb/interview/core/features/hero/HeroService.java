@@ -3,6 +3,7 @@ package br.com.brainweb.interview.core.features.hero;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
+import br.com.brainweb.interview.model.dto.HeroWithStatsDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -27,4 +28,10 @@ public class HeroService {
         Long powerStatsId = powerStatsService.create(powerStats);
         return heroRepository.create(new Hero(createHeroRequest, powerStatsId));
     }
+
+    @Transactional
+    public HeroWithStatsDto findById(Long id){
+        return heroRepository.findById(id);
+    }
+
 }
