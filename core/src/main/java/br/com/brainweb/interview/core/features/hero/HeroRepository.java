@@ -1,12 +1,14 @@
 package br.com.brainweb.interview.core.features.hero;
 
-import br.com.brainweb.interview.model.Hero;
-import lombok.RequiredArgsConstructor;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.Map;
-import java.util.UUID;
+import br.com.brainweb.interview.model.Hero;
+import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
@@ -16,9 +18,10 @@ public class HeroRepository {
         " (name, race, power_stats_id)" +
         " VALUES (:name, :race, :powerStatsId) RETURNING id";
 
+    @Autowired
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    UUID create(Hero hero) {
+    public Long create(Hero hero) {
         final Map<String, Object> params = Map.of("name", hero.getName(),
             "race", hero.getRace().name(),
             "powerStatsId", hero.getPowerStatsId());
@@ -26,6 +29,6 @@ public class HeroRepository {
         return namedParameterJdbcTemplate.queryForObject(
             CREATE_HERO_QUERY,
             params,
-            UUID.class);
+            Long.class);
     }
 }
