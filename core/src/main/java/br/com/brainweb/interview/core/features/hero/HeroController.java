@@ -45,11 +45,7 @@ public class HeroController {
     @GetMapping("/findByName/{name}")
     public ResponseEntity<?> findById(@PathVariable String name){
         final HeroWithStatsDto response = heroService.findByName(name);
-        if(response != null){
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object Not Found!!!");
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
