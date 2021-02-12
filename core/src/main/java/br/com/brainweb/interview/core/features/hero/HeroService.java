@@ -4,6 +4,7 @@ import br.com.brainweb.interview.core.features.powerstats.PowerStatsService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.dto.HeroWithStatsDto;
+import br.com.brainweb.interview.model.dto.HeroesCompareDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import br.com.brainweb.interview.model.request.HeroCompleteRequest;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +56,10 @@ public class HeroService {
             heroRepository.delete(id);
             return powerStatsService.delete(hero.getPowerStatsId());
         }
+    }
+
+    public HeroesCompareDto compare(Long firstHeroId, Long secondHeroId) {
+        HeroesCompareDto response = HeroesCompareDto.create(heroRepository.findById(firstHeroId), heroRepository.findById(secondHeroId));
+        return response;
     }
 }

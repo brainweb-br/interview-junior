@@ -1,8 +1,10 @@
 package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.dto.HeroWithStatsDto;
+import br.com.brainweb.interview.model.dto.HeroesCompareDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import br.com.brainweb.interview.model.request.HeroCompleteRequest;
+import br.com.brainweb.interview.model.request.HeroesCompareRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,4 +72,15 @@ public class HeroController {
              return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object Not Found!!!");
          }
      }
+
+    @PostMapping("compare")
+    public ResponseEntity<?> compare(@Validated
+                                         @RequestBody HeroesCompareRequest heroRequest){
+        final HeroesCompareDto response = heroService.compare(heroRequest.getFirst(), heroRequest.getSecond());
+        if(response != null){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Objects Not Found!!!");
+        }
+    }
 }
