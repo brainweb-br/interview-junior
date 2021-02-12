@@ -6,6 +6,7 @@ import java.util.UUID;
 import br.com.brainweb.interview.core.mapper.HeroMapper;
 import br.com.brainweb.interview.model.dto.HeroWithStatsDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -27,6 +28,11 @@ public class HeroRepository {
             "ON H.POWER_STATS_ID = P.ID " +
             "WHERE H.ID = ?";
 
+    private static final String FIND_HERO_BY_NAME = "SELECT * FROM HERO H " +
+            "INNER JOIN POWER_STATS P " +
+            "ON H.POWER_STATS_ID = P.ID " +
+            "WHERE H.NAME LIKE ?";
+
     @Autowired
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
@@ -44,7 +50,20 @@ public class HeroRepository {
     }
 
     HeroWithStatsDto findById(Long id){
-        return jdbcTemplate.queryForObject(FIND_HERO_BY_ID, new Object[]{id}, new HeroMapper());
+        try {
+            return jdbcTemplate.queryForObject(FIND_HERO_BY_ID, new Object[]{id}, new HeroMapper());
+
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
+    public HeroWithStatsDto findByName(String name) {
+        try {
+            return jdbcTemplate.queryForObject(FIND_HERO_BY_NAME, new Object[]{name}, new HeroMapper());
+
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
 }

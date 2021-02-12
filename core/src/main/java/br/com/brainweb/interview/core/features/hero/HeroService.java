@@ -34,4 +34,7 @@ public class HeroService {
         return heroRepository.findById(id);
     }
 
+    public HeroWithStatsDto findByName(String name) {
+        return heroRepository.findByName(name);
+    }
 }

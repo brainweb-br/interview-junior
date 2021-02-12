@@ -35,7 +35,23 @@ public class HeroController {
     @GetMapping("/findById/{id}")
     public ResponseEntity<?> findById(@PathVariable Long id){
         final HeroWithStatsDto response = heroService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        if(response != null){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object Not Found!!!");
+        }
     }
+
+    @GetMapping("/findByName/{name}")
+    public ResponseEntity<?> findById(@PathVariable String name){
+        final HeroWithStatsDto response = heroService.findByName(name);
+        if(response != null){
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object Not Found!!!");
+        }
+    }
+
+
 
 }
