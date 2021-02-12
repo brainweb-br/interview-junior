@@ -10,6 +10,7 @@ import br.com.brainweb.interview.model.request.HeroCompleteRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,11 @@ public class HeroService {
     }
 
     public HeroesCompareDto compare(Long firstHeroId, Long secondHeroId) {
-        HeroesCompareDto response = HeroesCompareDto.create(heroRepository.findById(firstHeroId), heroRepository.findById(secondHeroId));
-        return response;
+        try {
+            HeroesCompareDto response = HeroesCompareDto.create(heroRepository.findById(firstHeroId), heroRepository.findById(secondHeroId));
+            return response;
+        }catch (NullPointerException e){
+            return null;
+        }
     }
 }
