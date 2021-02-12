@@ -16,6 +16,7 @@ public class HeroMapper implements RowMapper<HeroWithStatsDto> {
         hero.setId(rs.getLong("id"));
         hero.setName(rs.getString("name"));
         hero.setRace(rs.getString("race"));
+        hero.setPowerStatsId(rs.getLong("power_stats_id"));
         hero.setStrength(rs.getInt("strength"));
         hero.setAgility(rs.getInt("agility"));
         hero.setDexterity(rs.getInt("dexterity"));

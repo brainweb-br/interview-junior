@@ -5,6 +5,7 @@ import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.dto.HeroWithStatsDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import br.com.brainweb.interview.model.request.HeroCompleteRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,23 @@ public class HeroService {
 
     public HeroWithStatsDto findByName(String name) {
         return heroRepository.findByName(name);
+    }
+
+    @Transactional
+    public Long update(HeroCompleteRequest heroRequest) {
+        Long statsId = powerStatsService.update(PowerStats.create(heroRequest));
+
+        return heroRepository.update(Hero.create(heroRequest));
+    }
+
+    @Transactional
+    public boolean delete(Long id) {
+        HeroWithStatsDto hero = heroRepository.findById(id);
+        if(hero == null){
+            return false;
+        }else{
+            heroRepository.delete(id);
+            return powerStatsService.delete(hero.getPowerStatsId());
+        }
     }
 }

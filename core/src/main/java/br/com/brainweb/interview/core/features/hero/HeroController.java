@@ -2,6 +2,7 @@ package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.dto.HeroWithStatsDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import br.com.brainweb.interview.model.request.HeroCompleteRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,24 @@ public class HeroController {
     }
 
 
+     @PutMapping(consumes = APPLICATION_JSON_VALUE)
+     public ResponseEntity<?> update(@Validated
+                                         @RequestBody HeroCompleteRequest heroRequest){
+         final Long id = heroService.update(heroRequest);
+         if(id != null){
+             return ResponseEntity.status(HttpStatus.OK).body("Hero " + id + " updated!!!");
+         }else{
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object Not Found!!!");
+         }
+     }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+         final boolean deleted = heroService.delete(id);
+         if(deleted == true){
+             return ResponseEntity.status(HttpStatus.OK).body("Hero " + id + " deleted!!!");
+         }else{
+             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object Not Found!!!");
+         }
+     }
 }

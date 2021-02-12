@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.model.dto;
+package br.com.brainweb.interview.model.request;
 
 import br.com.brainweb.interview.model.enums.Race;
 import lombok.AllArgsConstructor;
@@ -12,17 +12,16 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class HeroWithStatsDto {
+public class HeroCompleteRequest {
 
     private Long id;
     private String name;
-    private String race;
-    private Long powerStatsId;
+    private Race race;
+    private Long pid;
+    private boolean enabled;
     private int strength;
     private int agility;
     private int dexterity;
     private int intelligence;
-    private String createdAt;
-    private String updatedAt;
 
 }

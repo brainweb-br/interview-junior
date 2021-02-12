@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.model;
 
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import br.com.brainweb.interview.model.request.HeroCompleteRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,5 +31,15 @@ public class PowerStats {
         this.agility = createHeroRequest.getAgility();
         this.dexterity = createHeroRequest.getDexterity();
         this.intelligence = createHeroRequest.getIntelligence();
+    }
+
+    public static PowerStats create(HeroCompleteRequest request) {
+        PowerStats stats = new PowerStats();
+        stats.setId(request.getPid());
+        stats.setStrength(request.getStrength());
+        stats.setAgility(request.getAgility());
+        stats.setDexterity(request.getDexterity());
+        stats.setIntelligence(request.getIntelligence());
+        return stats;
     }
 }
