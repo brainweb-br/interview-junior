@@ -18,7 +18,7 @@ public class PowerStatsRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    UUID create(PowerStats powerStats) {
+    public UUID create(PowerStats powerStats) {
         return namedParameterJdbcTemplate.queryForObject(
             CREATE_POWER_STATS_QUERY,
             new BeanPropertySqlParameterSource(powerStats),
