@@ -3,11 +3,10 @@ package br.com.brainweb.interview.core.features.hero;
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
-
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
-
+import org.json.simple.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,35 +25,42 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/api/v1/heroes", produces = APPLICATION_JSON_VALUE)
 public class HeroController {
 
-	private final HeroService heroService;
+    private final HeroService heroService;
 
-	@PostMapping(consumes = APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> create(@Validated @RequestBody CreateHeroRequest createHeroRequest) {
-		final UUID id = heroService.create(createHeroRequest);
-		return created(URI.create(format("/api/v1/heroes/%s", id))).build();
-	}
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> create(@Validated @RequestBody CreateHeroRequest createHeroRequest) {
+	final UUID id = heroService.create(createHeroRequest);
+	return created(URI.create(format("/api/v1/heroes/%s", id))).build();
+    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Hero> getHeroById(@Validated @PathVariable("id") UUID id) {
-		Hero hero = heroService.getHeroById(id);
-		return ResponseEntity.ok().body(hero);
-	}
+    @GetMapping("/{id}")
+    public ResponseEntity<Hero> getHeroById(@Validated @PathVariable("id") UUID id) {
+	Hero hero = heroService.getHeroById(id);
+	return ResponseEntity.ok().body(hero);
+    }
 
-	@GetMapping("/name/{name}")
-	public ResponseEntity<List<Hero>> getHerosByName(@Validated @PathVariable("name") String name) {
-		List<Hero> heros = heroService.getHerosByName(name);
-		return ResponseEntity.ok().body(heros);
-	}
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Hero>> getHerosByName(@Validated @PathVariable("name") String name) {
+	List<Hero> heros = heroService.getHerosByName(name);
+	return ResponseEntity.ok().body(heros);
+    }
 
-	@PutMapping("/update")
-	public ResponseEntity<Integer> update(@Validated @RequestBody Hero hero) {
-		Integer bool = heroService.updateHero(hero);
-		return ResponseEntity.ok().body(bool);
-	}
+    @PutMapping("/update")
+    public ResponseEntity<Integer> update(@Validated @RequestBody Hero hero) {
+	Integer bool = heroService.updateHero(hero);
+	return ResponseEntity.ok().body(bool);
+    }
 
-	@PutMapping("/delete/{id}")
-	public ResponseEntity<Integer> delete(@Validated @PathVariable("id") UUID id) {
-		Integer bool = heroService.deleteHero(id);
-		return ResponseEntity.ok().body(bool);
-	}
+    @PutMapping("/delete/{id}")
+    public ResponseEntity<Integer> delete(@Validated @PathVariable("id") UUID id) {
+	Integer bool = heroService.deleteHero(id);
+	return ResponseEntity.ok().body(bool);
+    }
+
+    @GetMapping("/comparations/{id1}/{id2}")
+    public ResponseEntity<JSONObject> getComparationsBetweenHeros(@Validated @PathVariable("id1") UUID id1,
+	    @Validated @PathVariable("id2") UUID id2) {
+	JSONObject comparations = heroService.getComparationsBetweenHeros(id1, id2);
+	return ResponseEntity.ok().body(comparations);
+    }
 }
