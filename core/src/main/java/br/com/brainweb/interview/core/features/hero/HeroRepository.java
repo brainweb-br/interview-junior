@@ -22,6 +22,10 @@ public class HeroRepository {
         "INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
         "WHERE hero.id = :id";
 
+    private static final String FIND_HERO_BY_NAME_QUERY = "SELECT * FROM hero "+
+        "INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
+        "WHERE hero.name LIKE :name";
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     UUID create(Hero hero) {
@@ -40,6 +44,16 @@ public class HeroRepository {
 
         return namedParameterJdbcTemplate.queryForObject(
             FIND_HERO_BY_ID_QUERY,
+            params,
+            new HeroRowMapper()
+        );
+    }
+
+    HeroDTO findByName(String name) {
+        final Map<String, Object> params = Map.of("name", name);
+
+        return namedParameterJdbcTemplate.queryForObject(
+            FIND_HERO_BY_NAME_QUERY,
             params,
             new HeroRowMapper()
         );
