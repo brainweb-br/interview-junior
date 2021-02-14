@@ -29,4 +29,8 @@ public class HeroService {
     public HeroDTO findById(UUID heroId) {
         return heroRepository.findById(heroId);
     }
+
+    public HeroDTO findByName(String name) {
+        return heroRepository.findByName(name);
+    }
 }

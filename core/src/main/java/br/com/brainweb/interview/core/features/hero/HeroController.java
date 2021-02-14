@@ -1,9 +1,10 @@
 package br.com.brainweb.interview.core.features.hero;
 
-import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.dto.HeroDTO;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.util.UUID;
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.created;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +31,24 @@ public class HeroController {
         return created(URI.create(format("/api/v1/heroes/%s", id))).build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<HeroDTO> findById(@PathVariable String id){
-        HeroDTO hero = heroService.findById(UUID.fromString(id));
-        return ok(hero);
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> findById(@PathVariable String id) {
+        try{
+            HeroDTO hero = heroService.findById(UUID.fromString(id));
+            return status(HttpStatus.OK).body(hero);
+        } catch (EmptyResultDataAccessException e) {
+            return status(HttpStatus.NOT_FOUND).body("No Hero found for the given id");
+        }
+
+    }
+
+    @GetMapping("name/{name}")
+    public ResponseEntity<?> findByName(@PathVariable String name) {
+        try {
+            return status(HttpStatus.OK).body(heroService.findByName(name));
+        } catch (EmptyResultDataAccessException e) {
+            return status(HttpStatus.OK).body("");
+        }
+
     }
 }

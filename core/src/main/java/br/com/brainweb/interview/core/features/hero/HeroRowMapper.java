@@ -25,6 +25,8 @@ public class HeroRowMapper implements RowMapper<HeroDTO> {
                 .id(UUID.fromString(rs.getString("power_stats_id")))
                 .strength(rs.getInt("strength"))
                 .agility(rs.getInt("agility"))
+                .dexterity(rs.getInt("dexterity"))
+                .intelligence(rs.getInt("intelligence"))
                 .build())
             .build();
     }
