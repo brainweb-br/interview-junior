@@ -4,11 +4,13 @@ import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
+import br.com.brainweb.interview.model.dto.HeroDTO;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,5 +24,9 @@ public class HeroService {
     public UUID create(CreateHeroRequest createHeroRequest) {
         UUID powerStatId = powerStatsService.create(new PowerStats(createHeroRequest));
         return heroRepository.create(new Hero(createHeroRequest, powerStatId));
+    }
+
+    public HeroDTO findById(UUID heroId) {
+        return heroRepository.findById(heroId);
     }
 }
