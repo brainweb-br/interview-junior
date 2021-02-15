@@ -3,6 +3,7 @@ package br.com.brainweb.interview.core.features.hero;
 import br.com.brainweb.interview.core.mapper.HeroMapper;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.dto.HeroDto;
+import br.com.brainweb.interview.model.request.UpdateHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Repository
@@ -29,6 +31,16 @@ public class HeroRepository {
             " INNER JOIN POWER_STATS p" +
             " ON h.power_stats_id = p.id" +
             " WHERE h.name = ?";
+
+    private static final String UPDATE_HERO_QUERY = "UPDATE HERO" +
+            " SET NAME = :name," +
+            " RACE = :race," +
+            " ENABLED = :enabled," +
+            " UPDATED_AT = :updatedAt" +
+            " WHERE ID = :id RETURNING ID";
+
+    private static final String DELETE_HERO_QUERY = "DELETE FROM HERO" +
+            " WHERE ID = :id RETURNING true";
 
     @Autowired
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -64,6 +76,36 @@ public class HeroRepository {
                     new Object[]{name},
                     new HeroMapper());
         }catch (EmptyResultDataAccessException ex){
+            return null;
+        }
+    }
+
+    public boolean delete(Long id) {
+        final Map<String, Object> params = Map.of("id", id);
+
+        try {
+            return namedParameterJdbcTemplate.queryForObject(DELETE_HERO_QUERY,
+                    params,
+                    boolean.class);
+        }catch (EmptyResultDataAccessException ex){
+            return false;
+        }
+    }
+
+    public Long update(Long id, UpdateHeroRequest request) {
+        final Map<String, Object> params = Map.of("name", request.getName(),
+                "race", request.getRace(),
+                "enabled", request.getEnable(),
+                "updatedAt", LocalDateTime.now(),
+                "id", id);
+
+        try{
+            Long heroId = namedParameterJdbcTemplate.queryForObject(
+                    UPDATE_HERO_QUERY,
+                    params,
+                    Long.class);
+            return heroId;
+        }catch (EmptyResultDataAccessException e){
             return null;
         }
     }

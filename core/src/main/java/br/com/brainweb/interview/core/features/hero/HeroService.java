@@ -5,12 +5,13 @@ import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.dto.HeroDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import br.com.brainweb.interview.model.request.UpdateHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +38,20 @@ public class HeroService {
     @Transactional
     public HeroDto findByName(String name) {
         return heroRepository.findByName(name);
+    }
+
+    public Boolean delete(Long id) {
+        HeroDto dto = heroRepository.findById(id);
+
+        return dto != null ? heroRepository.delete(id) : false;
+    }
+
+    public Long update(Long id, UpdateHeroRequest request) {
+        HeroDto dto = heroRepository.findById(id);
+
+        if (dto != null){
+            return heroRepository.update(id, request);
+        }
+        return null;
     }
 }
