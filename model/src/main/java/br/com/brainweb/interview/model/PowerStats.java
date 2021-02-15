@@ -26,9 +26,9 @@ public class PowerStats {
     private Instant updatedAt;
 
     public PowerStats(CreateHeroRequest createHeroRequest) {
-        this.strength = createHeroRequest.getStrength();
-        this.agility = createHeroRequest.getAgility();
-        this.dexterity = createHeroRequest.getDexterity();
-        this.intelligence = createHeroRequest.getIntelligence();
+	this.strength = createHeroRequest.getStrength();
+	this.agility = createHeroRequest.getAgility();
+	this.dexterity = createHeroRequest.getDexterity();
+	this.intelligence = createHeroRequest.getIntelligence();
     }
 }

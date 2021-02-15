@@ -1,6 +1,6 @@
-CREATE TABLE interview_service.hero
+CREATE TABLE hero
 (
-    id             UUID PRIMARY KEY NOT NULL DEFAULT public.uuid_generate_v4(),
+    id             UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
     name           VARCHAR(255)     NOT NULL UNIQUE,
     race           VARCHAR(255)     NOT NULL,
     power_stats_id UUID             NOT NULL,
