@@ -63,4 +63,14 @@ public class HeroController {
         }
 
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id) {
+        try {
+            heroService.delete(UUID.fromString(id));
+            return status(HttpStatus.NO_CONTENT).body("");
+        } catch (EmptyResultDataAccessException e) {
+            return status(HttpStatus.NOT_FOUND).body("Cannot delete Hero for the given id");
+        }
+    }
 }

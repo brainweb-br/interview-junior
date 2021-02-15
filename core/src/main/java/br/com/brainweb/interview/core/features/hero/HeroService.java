@@ -37,4 +37,8 @@ public class HeroService {
     public void updateHero(HeroDTO hero) {
         heroRepository.updateHero(hero);
     }
+
+    public void delete(UUID heroId) {
+        heroRepository.delete(heroId);
+    }
 }

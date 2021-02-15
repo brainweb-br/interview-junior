@@ -37,6 +37,9 @@ public class HeroRepository {
         "dexterity = :dexterity, intelligence = :intelligence, updated_at = now() " +
         "WHERE id = id";
 
+    private static final String DELETE_HERO_QUERY = "DELETE FROM hero " +
+        "WHERE hero.id = :id RETURNING id";
+
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -92,5 +95,10 @@ public class HeroRepository {
             "intelligence", hero.getPowerStats().getIntelligence()
         );
         namedParameterJdbcTemplate.update(UPDATE_HERO_STATS_QUERY, paramsStats);
+    }
+
+    public void delete(UUID id) {
+        final Map<String, Object> params = Map.of("id", id);
+        namedParameterJdbcTemplate.queryForObject(DELETE_HERO_QUERY, params, UUID.class);
     }
 }
