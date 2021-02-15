@@ -1,6 +1,5 @@
 package br.com.brainweb.interview.core.features.hero;
 
-import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.dto.HeroDTO;
 import br.com.brainweb.interview.model.enums.Race;

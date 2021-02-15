@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.Hero;
+import br.com.brainweb.interview.model.dto.HeroCompareDTO;
 import br.com.brainweb.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -39,6 +40,11 @@ public class HeroRepository {
 
     private static final String DELETE_HERO_QUERY = "DELETE FROM hero " +
         "WHERE hero.id = :id RETURNING id";
+
+    private static final String COMPARE_HEROES_QUERY = "SELECT power_stats.id, power_stats.strength, " +
+        "power_stats.agility, power_stats.dexterity, power_stats.intelligence FROM hero "+
+        "INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
+        "WHERE hero.id = :id1 OR hero.id = :id2";
 
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -100,5 +106,13 @@ public class HeroRepository {
     public void delete(UUID id) {
         final Map<String, Object> params = Map.of("id", id);
         namedParameterJdbcTemplate.queryForObject(DELETE_HERO_QUERY, params, UUID.class);
+    }
+
+    public List<HeroCompareDTO> compare(UUID id1, UUID id2) {
+        final Map<String, Object> params = Map.of("id1", id1, "id2", id2);
+
+        return namedParameterJdbcTemplate.query(
+            COMPARE_HEROES_QUERY, params, new HeroCompareRowMapper()
+        );
     }
 }
