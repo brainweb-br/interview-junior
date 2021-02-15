@@ -1,6 +1,8 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.model.dto.HeroCompareDTO;
 import br.com.brainweb.interview.model.dto.HeroDTO;
+import br.com.brainweb.interview.model.dto.HeroesDTO;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -42,7 +44,7 @@ public class HeroController {
     }
 
     @GetMapping("name/{name}")
-    public ResponseEntity<?> findByName(@PathVariable String name) {
+    public ResponseEntity<?> findByName(@Validated @PathVariable String name) {
         try {
             return status(HttpStatus.OK).body(heroService.findByName(name));
         } catch (EmptyResultDataAccessException e) {
@@ -52,7 +54,7 @@ public class HeroController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateHero(
-        @Validated @RequestBody HeroDTO hero, @PathVariable String id
+        @Validated @RequestBody HeroDTO hero, @Validated @PathVariable String id
     ) {
         try {
             hero.setId(UUID.fromString(id));
@@ -65,12 +67,25 @@ public class HeroController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable String id) {
+    public ResponseEntity<?> delete(@Validated @PathVariable String id) {
         try {
             heroService.delete(UUID.fromString(id));
             return status(HttpStatus.NO_CONTENT).body("");
         } catch (EmptyResultDataAccessException e) {
             return status(HttpStatus.NOT_FOUND).body("Cannot delete Hero for the given id");
         }
+    }
+
+    @GetMapping("/compare/{id1}/{id2}")
+    public ResponseEntity<?> compare(
+        @Validated @PathVariable("id1") String id1, @Validated @PathVariable("id2") String id2
+    ) {
+        HeroesDTO heroes = heroService.compare(UUID.fromString(id1), UUID.fromString(id2));
+
+        if (heroes == null) {
+            return status(HttpStatus.NO_CONTENT).body("");
+        }
+
+        return status(HttpStatus.OK).body(heroes);
     }
 }
