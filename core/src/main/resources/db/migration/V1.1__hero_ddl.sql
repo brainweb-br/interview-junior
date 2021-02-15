@@ -1,9 +1,9 @@
 CREATE TABLE hero
 (
-    id             UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    id             Serial PRIMARY KEY,
     name           VARCHAR(255)     NOT NULL UNIQUE,
     race           VARCHAR(255)     NOT NULL,
-    power_stats_id UUID             NOT NULL,
+    power_stats_id Serial             NOT NULL,
     enabled        BOOLEAN          NOT NULL DEFAULT TRUE,
     created_at     TIMESTAMPTZ      NOT NULL DEFAULT now(),
     updated_at     TIMESTAMPTZ      NOT NULL DEFAULT now(),

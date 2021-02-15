@@ -18,15 +18,15 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public class Hero {
 
-    private UUID id;
+    private Long id;
     private String name;
     private Race race;
-    private UUID powerStatsId;
+    private Long powerStatsId;
     private Instant createdAt;
     private Instant updatedAt;
     private boolean enabled;
 
-    public Hero(CreateHeroRequest createHeroRequest, UUID powerStatsId) {
+    public Hero(CreateHeroRequest createHeroRequest, Long powerStatsId) {
         this.name = createHeroRequest.getName();
         this.race = createHeroRequest.getRace();
         this.powerStatsId = powerStatsId;

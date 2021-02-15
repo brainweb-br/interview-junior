@@ -2,6 +2,7 @@ package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,7 @@ public class HeroRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    UUID create(Hero hero) {
+    Long create(Hero hero) {
         final Map<String, Object> params = Map.of("name", hero.getName(),
             "race", hero.getRace().name(),
             "powerStatsId", hero.getPowerStatsId());
@@ -26,6 +27,6 @@ public class HeroRepository {
         return namedParameterJdbcTemplate.queryForObject(
             CREATE_HERO_QUERY,
             params,
-            UUID.class);
+            Long.class);
     }
 }

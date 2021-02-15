@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PRIVATE;
 @Builder
 public class PowerStats {
 
-    private UUID id;
+    private Long id;
     private int strength;
     private int agility;
     private int dexterity;
