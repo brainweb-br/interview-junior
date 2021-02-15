@@ -54,8 +54,13 @@ public class HeroController {
     public ResponseEntity<?> updateHero(
         @Validated @RequestBody HeroDTO hero, @PathVariable String id
     ) {
-        hero.setId(UUID.fromString(id));
-        heroService.updateHero(hero);
-        return status(HttpStatus.NO_CONTENT).body("");
+        try {
+            hero.setId(UUID.fromString(id));
+            heroService.updateHero(hero);
+            return status(HttpStatus.NO_CONTENT).body("");
+        } catch (EmptyResultDataAccessException e) {
+            return status(HttpStatus.NOT_FOUND).body("Cannot update Hero for the given id");
+        }
+
     }
 }
