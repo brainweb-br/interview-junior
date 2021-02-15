@@ -5,7 +5,9 @@ import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.dto.HeroDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import br.com.brainweb.interview.model.request.HeroCompareRequest;
 import br.com.brainweb.interview.model.request.UpdateHeroRequest;
+import br.com.brainweb.interview.model.response.HeroCompareResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,16 @@ public class HeroService {
 
         if (dto != null){
             return heroRepository.update(id, request);
+        }
+        return null;
+    }
+
+    public HeroCompareResponse compareHero(HeroCompareRequest request) {
+        HeroDto firstHero = findByName(request.getFirstHero());
+        HeroDto secondHero = findByName(request.getSecondHero());
+
+        if (firstHero != null && secondHero != null){
+            return new HeroCompareResponse(firstHero, secondHero);
         }
         return null;
     }

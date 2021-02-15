@@ -2,8 +2,10 @@ package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.dto.HeroDto;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import br.com.brainweb.interview.model.request.HeroCompareRequest;
 import br.com.brainweb.interview.model.request.NameHeroRequest;
 import br.com.brainweb.interview.model.request.UpdateHeroRequest;
+import br.com.brainweb.interview.model.response.HeroCompareResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 import static java.lang.String.format;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -46,9 +47,17 @@ public class HeroController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<Boolean> update(@PathVariable Long id, @RequestBody UpdateHeroRequest request) {
+    public ResponseEntity<Boolean> update(@PathVariable Long id,
+                                          @RequestBody UpdateHeroRequest request) {
         Long dto = heroService.update(id, request);
         return dto!= null ? ResponseEntity.ok(true)
+                : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("compare")
+    public ResponseEntity<HeroCompareResponse> compareHero(@RequestBody HeroCompareRequest request) {
+        HeroCompareResponse response = heroService.compareHero(request);
+        return response!= null ? ResponseEntity.ok(response)
                 : ResponseEntity.notFound().build();
     }
 
