@@ -33,4 +33,8 @@ public class HeroService {
     public HeroDTO findByName(String name) {
         return heroRepository.findByName(name);
     }
+
+    public void updateHero(HeroDTO hero) {
+        heroRepository.updateHero(hero);
+    }
 }

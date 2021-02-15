@@ -39,7 +39,6 @@ public class HeroController {
         } catch (EmptyResultDataAccessException e) {
             return status(HttpStatus.NOT_FOUND).body("No Hero found for the given id");
         }
-
     }
 
     @GetMapping("name/{name}")
@@ -49,6 +48,14 @@ public class HeroController {
         } catch (EmptyResultDataAccessException e) {
             return status(HttpStatus.OK).body("");
         }
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateHero(
+        @Validated @RequestBody HeroDTO hero, @PathVariable String id
+    ) {
+        hero.setId(UUID.fromString(id));
+        heroService.updateHero(hero);
+        return status(HttpStatus.NO_CONTENT).body("");
     }
 }
