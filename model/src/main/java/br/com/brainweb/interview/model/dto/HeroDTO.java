@@ -18,7 +18,6 @@ import java.util.UUID;
 @Builder
 public class HeroDTO {
 
-    @NotNull
     private UUID id;
 
     @NotEmpty
@@ -27,7 +26,6 @@ public class HeroDTO {
     @NotNull
     private Race race;
 
-    @NotNull
     private boolean enabled;
 
     @JsonProperty("powerStats")
