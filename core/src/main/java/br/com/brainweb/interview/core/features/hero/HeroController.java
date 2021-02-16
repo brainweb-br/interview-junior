@@ -36,7 +36,7 @@ public class HeroController {
     public ResponseEntity<?> findById(@Validated @RequestParam UUID id) {
         try{
             HeroDTO hero = heroService.findById(id);
-            return status(HttpStatus.OK).body(hero);
+            return ok(hero);
         } catch (EmptyResultDataAccessException e) {
             return notFound().build();
         }
