@@ -33,7 +33,7 @@ public class HeroController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@Validated @RequestParam UUID id) {
+    public ResponseEntity<?> findById(@Validated @PathVariable UUID id) {
         try{
             HeroDTO hero = heroService.findById(id);
             return ok(hero);
@@ -42,7 +42,7 @@ public class HeroController {
         }
     }
 
-    @GetMapping("/{name}")
+    @GetMapping
     public ResponseEntity<?> findByName(@Validated @RequestParam String name) {
         try {
             return ok(heroService.findByName(name));
