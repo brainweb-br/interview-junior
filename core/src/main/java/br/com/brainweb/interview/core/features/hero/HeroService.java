@@ -35,7 +35,8 @@ public class HeroService {
         return heroRepository.findByName(name);
     }
 
-    public void updateHero(HeroDTO hero) {
+    public void updateHero(UUID id, HeroDTO hero) {
+        hero.setId(id);
         heroRepository.updateHero(hero);
     }
 
