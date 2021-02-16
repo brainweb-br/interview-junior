@@ -34,11 +34,6 @@ public class HeroRepository {
         "SET name = :name, race = :race, updated_at = now() " +
         "WHERE id = :id RETURNING power_stats_id";
 
-    private static final String UPDATE_HERO_STATS_QUERY = "UPDATE power_stats " +
-        "SET strength = :strength, agility = :agility, " +
-        "dexterity = :dexterity, intelligence = :intelligence, updated_at = now() " +
-        "WHERE id = id";
-
     private static final String DELETE_HERO_QUERY = "DELETE FROM hero " +
         "WHERE hero.id = :id RETURNING id";
 
@@ -82,23 +77,15 @@ public class HeroRepository {
     }
 
     @Transactional
-    public void updateHero(HeroDTO hero) {
+    public UUID updateHero(HeroDTO hero) {
          final Map<String, Object> paramsHero = Map.of(
             "id", hero.getId(),
             "name", hero.getName(),
             "race", hero.getRace().name(),
             "updated_at", Timestamp.from(Instant.now())
         );
-        UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(UPDATE_HERO_QUERY, paramsHero, UUID.class);
 
-        Map<String, Object> paramsStats = Map.of(
-            "id", power_stats_id,
-            "strength", hero.getPowerStats().getStrength(),
-            "agility", hero.getPowerStats().getAgility(),
-            "dexterity", hero.getPowerStats().getDexterity(),
-            "intelligence", hero.getPowerStats().getIntelligence()
-        );
-        namedParameterJdbcTemplate.update(UPDATE_HERO_STATS_QUERY, paramsStats);
+        return namedParameterJdbcTemplate.queryForObject(UPDATE_HERO_QUERY, paramsHero, UUID.class);
     }
 
     @Transactional

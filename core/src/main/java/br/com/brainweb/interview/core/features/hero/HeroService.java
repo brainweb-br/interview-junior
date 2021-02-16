@@ -37,7 +37,8 @@ public class HeroService {
 
     public void updateHero(UUID id, HeroDTO hero) {
         hero.setId(id);
-        heroRepository.updateHero(hero);
+        UUID stats_id = heroRepository.updateHero(hero);
+        powerStatsService.updateStats(stats_id, hero);
     }
 
     public void delete(UUID heroId) {
