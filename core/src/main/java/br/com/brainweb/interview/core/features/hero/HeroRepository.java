@@ -6,6 +6,7 @@ import br.com.brainweb.interview.model.dto.HeroDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -44,7 +45,7 @@ public class HeroRepository {
     private static final String COMPARE_HEROES_QUERY = "SELECT power_stats.id, power_stats.strength, " +
         "power_stats.agility, power_stats.dexterity, power_stats.intelligence FROM hero "+
         "INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
-        "WHERE hero.id = :id1 OR hero.id = :id2";
+        "WHERE hero.id IN (:id1, :id2)";
 
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -80,16 +81,13 @@ public class HeroRepository {
         );
     }
 
+    @Transactional
     public void updateHero(HeroDTO hero) {
          final Map<String, Object> paramsHero = Map.of(
             "id", hero.getId(),
             "name", hero.getName(),
             "race", hero.getRace().name(),
-            "updated_at", Timestamp.from(Instant.now()),
-            "strength", hero.getPowerStats().getStrength(),
-            "agility", hero.getPowerStats().getAgility(),
-            "dexterity", hero.getPowerStats().getDexterity(),
-            "intelligence", hero.getPowerStats().getIntelligence()
+            "updated_at", Timestamp.from(Instant.now())
         );
         UUID power_stats_id = namedParameterJdbcTemplate.queryForObject(UPDATE_HERO_QUERY, paramsHero, UUID.class);
 
@@ -103,6 +101,7 @@ public class HeroRepository {
         namedParameterJdbcTemplate.update(UPDATE_HERO_STATS_QUERY, paramsStats);
     }
 
+    @Transactional
     public void delete(UUID id) {
         final Map<String, Object> params = Map.of("id", id);
         namedParameterJdbcTemplate.queryForObject(DELETE_HERO_QUERY, params, UUID.class);
