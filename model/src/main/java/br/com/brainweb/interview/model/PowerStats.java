@@ -1,12 +1,19 @@
 package br.com.brainweb.interview.model;
 
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -22,8 +29,20 @@ public class PowerStats {
     private int agility;
     private int dexterity;
     private int intelligence;
-    private Instant createdAt;
-    private Instant updatedAt;
+    @JsonIgnore private Date createdAtDate;
+    @JsonIgnore private Date updatedAtDate;
+
+    @JsonProperty("createdAt")
+    public String getCreatedAt() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return formatter.format(createdAtDate);
+    }
+
+    @JsonProperty("updatedAt")
+    public String getUpdatedAt() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return formatter.format(updatedAtDate);
+    }
 
     public PowerStats(CreateHeroRequest createHeroRequest) {
         this.strength = createHeroRequest.getStrength();
