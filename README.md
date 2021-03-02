@@ -18,13 +18,13 @@ Ah, não se preocupe com o setup do projeto, o Alfred (acho que ele é tipo um m
 </br>
 Quando tentamos rodar os testes do projeto identificamos um bug no cadastro, algum NullPointerException. O erro aconteceu no teste de integração.<p> Dito isso vamos deixar uma lista com as tarefas:
 
-- [x] Resolver o bug no endpoint de cadastro de Heróis;
-- [x] Criar endpoint de busca de heróis por ID. ***Caso não encontre o herói o sistema deve retornar um erro 404 (Not Found)***;
-- [x] Criar endpoint de busca de heróis por filtro, nesse caso o filtro será apenas o nome. ***Caso não encontre nenhum herói o sistema deve retornar um sucesso 200 com o body vazio***;
+- [x] Resolver o bug no endpoint de cadastro de heróis;
+- [x] Criar endpoint de busca de heróis e seus atributos por ID. ***Caso não encontre o herói o sistema deve retornar um erro 404 (Not Found)***;
+- [x] Criar endpoint de busca de heróis e seus atributos por filtro, nesse caso o filtro será apenas o nome. ***Caso não encontre nenhum herói o sistema deve retornar um sucesso 200 com o body vazio***;
 - [x] Criar endpoint de atualização de heróis, todos os campos poderão ser atualizados. ***Caso não encontre o herói o sistema deve retornar um erro 404 (Not Found)***
 - [x] Criar endpoint de exclusão de heróis. A exclusão será física, ok? (Física?! É, deleta o registro da base). ***Caso não encontre o herói o sistema deve retornar um erro 404 (Not Found)***.
 
-Ah, tem algo mais! O Sr. Wayne nos pediu para criar um endpoint onde ele possa selecionar dois heróis e comparar seus atributos força, agilidade, dextreza e inteligência. Como resultado, o sistema deve retornar um objeto contendo os id's e a diferença dos atributos (positivo se maior, negativo se menor) de cada herói. Dá uma pensada em como vai ficar esse objeto e o caminho do endpoint, tudo bem?
+Ah, tem algo mais! O Sr. Wayne nos pediu para criar um endpoint onde ele possa selecionar dois heróis e comparar seus atributos força, agilidade, destreza e inteligência. Como resultado, o sistema deve retornar um objeto contendo os id's e a diferença dos atributos (positivo se maior, negativo se menor) de cada herói. Dá uma pensada em como vai ficar esse objeto e o caminho do endpoint, tudo bem?
 <p>
 Agora sim, terminamos! Se você nos entregar isso que pedimos garanto que o Sr. Wayne vai pirar!!!
 
@@ -32,8 +32,11 @@ Agora sim, terminamos! Se você nos entregar isso que pedimos garanto que o Sr. 
 Leia essas instruções para ganhar tempo no desenvolvimento, ok? ;)
 </br>
 #### Primeiro Passo
-Como primeiro passo faça um ***fork*** desse projeto na sua conta do GitHub é assim que iremos avaliar sua prova!</br>
+Como primeiro passo faça um ***fork*** desse projeto na sua conta do GitHub, se não tiver uma conta é só criar uma nova.
+</br>
 ***Não iremos avaliar provas que não estejam nesse padrão, então MUITA ATENÇÃO nessa dica.***
+#### Correção
+Ao término da prova, ***abra um PR (Pull Request)***, é assim que iremos avaliar o código proposto.
 #### Configurações
 - OpenJDK 11 instalado;
 - Maven na versão 3.6+ instalado;
