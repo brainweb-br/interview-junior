@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+// Using Hero classes and DTO to manage PowerStats
 public class PowerStatsService {
 
     private final PowerStatsRepository powerStatsRepository;

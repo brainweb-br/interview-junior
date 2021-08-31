@@ -17,6 +17,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.*;
@@ -26,7 +27,6 @@ import static org.springframework.http.ResponseEntity.status;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class ExceptionAdvice {
-
 
     @ExceptionHandler(value = {Exception.class})
     ResponseEntity<Object> handleGeneralException(Exception e) {
@@ -53,8 +53,8 @@ public class ExceptionAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<Object> handleConstraintViolationException(MethodArgumentNotValidException e) {
         final List<String> errors = e.getBindingResult().getAllErrors().stream()
-            .map(DefaultMessageSourceResolvable::getDefaultMessage)
-            .collect(Collectors.toList());
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
         return status(BAD_REQUEST).body(errors);
     }
 
@@ -91,5 +91,11 @@ public class ExceptionAdvice {
     ResponseEntity<Object> handleResourceAccessException(ResourceAccessException e) {
         log.error(e.getMessage(), e);
         return status(BAD_GATEWAY).body("message.integration.connection.refused");
+    }
+
+    @ExceptionHandler(GenericException.class)
+    ResponseEntity<Object> handleGenericException(GenericException e){
+        log.error(e.getResponseMessage(), e);
+        return status(e.getStatus()).body( Map.of("message", e.getResponseMessage()));
     }
 }
