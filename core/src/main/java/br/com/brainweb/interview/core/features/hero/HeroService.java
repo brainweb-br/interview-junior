@@ -21,12 +21,17 @@ public class HeroService {
 
     @Transactional
     public UUID create(CreateHeroRequest createHeroRequest) {
-        UUID powerStatsId = powerStatsService.create(new PowerStats(createHeroRequest));
+        final UUID powerStatsId = powerStatsService.create(new PowerStats(createHeroRequest));
         return heroRepository.create(new Hero(createHeroRequest, powerStatsId));
     }
 
     @Transactional
     public FindGuyParser findGuyByIdOrName(FindGuyRequest findGuyRequest, boolean byName) {
         return heroRepository.findGuyByIdOrName(findGuyRequest, byName);
+    }
+
+    @Transactional
+    public UUID updateGuyById(FindGuyParser FindGuyParser) {
+        return heroRepository.updateGuyById(FindGuyParser);
     }
 }

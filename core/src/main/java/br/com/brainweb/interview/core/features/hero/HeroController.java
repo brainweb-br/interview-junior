@@ -1,5 +1,6 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.powerstats.PowerStatsService;
 import br.com.brainweb.interview.model.parser.FindGuyParser;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import br.com.brainweb.interview.model.request.FindGuyRequest;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.ResponseEntity.notFound;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,6 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class HeroController {
 
     private final HeroService heroService;
+    private final PowerStatsService powerStatsService;
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<String> create(@Validated
@@ -28,27 +29,35 @@ public class HeroController {
         return ok(id.toString());
     }
 
-    @GetMapping("/byid/{id}")
-    public ResponseEntity<FindGuyParser> findGuyById(@Validated @PathVariable UUID id) {
+    @PostMapping(value = "byid", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<FindGuyParser> findGuyById(@Validated @RequestBody FindGuyRequest findGuyRequest) {
         try {
-            FindGuyRequest findGuyRequest = new FindGuyRequest();
-            findGuyRequest.setId(id);
-
             return ok(heroService.findGuyByIdOrName(findGuyRequest, false));
         } catch (Exception exception) {
             return notFound().build();
         }
     }
 
-    @GetMapping("/byname/{name}")
-    public ResponseEntity<FindGuyParser> findGuyByName(@Validated @PathVariable String name) {
+    @PostMapping(value = "byname", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<FindGuyParser> findGuyByName(@Validated @RequestBody FindGuyRequest findGuyRequest) {
         try {
-            FindGuyRequest findGuyRequest = new FindGuyRequest();
-            findGuyRequest.setName(name);
-
             return ok(heroService.findGuyByIdOrName(findGuyRequest, true));
         } catch (Exception exception) {
             return ok().build();
+        }
+    }
+
+    @PutMapping(consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<UUID> updateGuyById(@Validated @RequestBody FindGuyParser findGuyParser) {
+        try {
+            // bruh, query error
+            final UUID id = heroService.updateGuyById(findGuyParser);
+            if (id == null)
+                return unprocessableEntity().build();
+
+            return powerStatsService.updateGuyById(findGuyParser, id) != null ? noContent().build() : unprocessableEntity().build();
+        } catch (Exception exception) {
+            return notFound().build();
         }
     }
 }

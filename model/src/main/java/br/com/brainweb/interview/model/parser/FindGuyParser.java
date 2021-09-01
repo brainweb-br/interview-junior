@@ -21,7 +21,6 @@ public class FindGuyParser {
     @NotEmpty
     private String name;
 
-    @NotEmpty
     private Race race;
 
     @NotNull

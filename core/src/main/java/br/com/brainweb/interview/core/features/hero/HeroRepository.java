@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,6 +28,12 @@ public class HeroRepository {
     private static final String FIND_GUY_BY_NAME_QUERY = "SELECT * FROM hero " +
             "INNER JOIN power_stats ON hero.power_stats_id = power_stats.id " +
             "WHERE hero.name = :name";
+
+    private static final String UPDATE_GUY_BY_ID_QUERY = "UPDATE hero " +
+            "SET name = :name, " +
+            "race = :race, " +
+            "updated_at = :updated_at " +
+            "WHERE id = :id RETURNING power_stats_id";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -52,5 +60,17 @@ public class HeroRepository {
                         FIND_GUY_BY_ID_QUERY,
                         params,
                         new FindGuyOrganizer());
+    }
+
+    UUID updateGuyById(FindGuyParser findGuyParser) {
+        final Map<String, Object> params = Map.of("name", findGuyParser.getName(),
+                "race", findGuyParser.getRace().name(),
+                "updated_at", Timestamp.from(Instant.now()),
+                "id", findGuyParser.getId());
+
+        return namedParameterJdbcTemplate.queryForObject(
+                UPDATE_GUY_BY_ID_QUERY,
+                params,
+                UUID.class);
     }
 }
