@@ -11,16 +11,9 @@ import java.util.UUID;
 public class FindGuyOrganizer implements RowMapper<FindGuyParser> {
     @Override
     public FindGuyParser mapRow(ResultSet rs, int unused) throws SQLException {
-        FindGuyParser organized = new FindGuyParser();
-
-        organized.setId(UUID.fromString(rs.getString("id")));
-        organized.setName(rs.getString("name"));
-        organized.setRace(Race.valueOf(rs.getString("race")));
-        organized.setStrength(rs.getInt("strength"));
-        organized.setAgility(rs.getInt("agility"));
-        organized.setDexterity(rs.getInt("dexterity"));
-        organized.setIntelligence(rs.getInt("intelligence"));
-
-        return organized;
+        return FindGuyParser.builder().id(UUID.fromString(rs.getString("id"))).name(rs.getString("name"))
+                .race(Race.valueOf(rs.getString("race"))).strength(rs.getInt("strength"))
+                .agility(rs.getInt("agility")).dexterity(rs.getInt("dexterity")).intelligence(rs.getInt("intelligence"))
+                .build();
     }
 }

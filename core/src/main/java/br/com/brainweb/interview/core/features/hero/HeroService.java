@@ -3,7 +3,9 @@ package br.com.brainweb.interview.core.features.hero;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
+import br.com.brainweb.interview.model.parser.CompareGuyParser;
 import br.com.brainweb.interview.model.parser.FindGuyParser;
+import br.com.brainweb.interview.model.request.CompareGuyRequest;
 import br.com.brainweb.interview.model.request.CreateHeroRequest;
 import br.com.brainweb.interview.model.request.FindGuyRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +35,15 @@ public class HeroService {
     @Transactional
     public UUID updateGuyById(FindGuyParser FindGuyParser) {
         return heroRepository.updateGuyById(FindGuyParser);
+    }
+
+    @Transactional
+    public void deleteGuyById(FindGuyRequest findGuyRequest) {
+        heroRepository.deleteGuyById(findGuyRequest);
+    }
+
+    @Transactional
+    public CompareGuyParser compareGuysById(CompareGuyRequest compareGuyRequest) {
+        return heroRepository.compareGuysById(compareGuyRequest);
     }
 }

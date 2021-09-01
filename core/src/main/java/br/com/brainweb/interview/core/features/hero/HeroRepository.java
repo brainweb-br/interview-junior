@@ -2,10 +2,13 @@ package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.core.organizer.FindGuyOrganizer;
 import br.com.brainweb.interview.model.Hero;
+import br.com.brainweb.interview.model.parser.CompareGuyParser;
 import br.com.brainweb.interview.model.parser.FindGuyParser;
+import br.com.brainweb.interview.model.request.CompareGuyRequest;
 import br.com.brainweb.interview.model.request.FindGuyRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -34,6 +37,9 @@ public class HeroRepository {
             "race = :race, " +
             "updated_at = :updated_at " +
             "WHERE id = :id RETURNING power_stats_id";
+
+    private static final String DELETE_GUY_BY_ID_QUERY = "DELETE from hero " +
+            "WHERE id = :id RETURNING name";
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -72,5 +78,35 @@ public class HeroRepository {
                 UPDATE_GUY_BY_ID_QUERY,
                 params,
                 UUID.class);
+    }
+
+    void deleteGuyById(FindGuyRequest findGuyRequest) {
+        final Map<String, Object> params = Map.of("id", findGuyRequest.getId());
+
+        namedParameterJdbcTemplate.queryForObject(
+                DELETE_GUY_BY_ID_QUERY,
+                params,
+                String.class);
+    }
+
+    @Async
+    CompareGuyParser compareGuysById(CompareGuyRequest compareGuyRequest) {
+        final Map<String, Object> params1 = Map.of("id", compareGuyRequest.getId1());
+        final Map<String, Object> params2 = Map.of("id", compareGuyRequest.getId2());
+
+        FindGuyParser guy1 = namedParameterJdbcTemplate.queryForObject(
+                FIND_GUY_BY_ID_QUERY,
+                params1,
+                new FindGuyOrganizer());
+
+        FindGuyParser guy2 = namedParameterJdbcTemplate.queryForObject(
+                FIND_GUY_BY_ID_QUERY,
+                params2,
+                new FindGuyOrganizer());
+
+        return CompareGuyParser.builder().
+                id1(guy1.getId()).name1(guy1.getName()).race1(guy1.getRace()).strength1(guy1.getStrength()).agility1(guy1.getAgility()).dexterity1(guy1.getDexterity()).intelligence1(guy1.getIntelligence()).
+                id2(guy2.getId()).name2(guy2.getName()).race2(guy2.getRace()).strength2(guy2.getStrength()).agility2(guy2.getAgility()).dexterity2(guy2.getDexterity()).intelligence2(guy2.getIntelligence()).
+                strengthD(guy1.getStrength() - guy2.getStrength()).agilityD(guy1.getAgility() - guy2.getAgility()).dexterityD(guy1.getDexterity() - guy2.getDexterity()).intelligenceD(guy1.getIntelligence() - guy2.getIntelligence()).build();
     }
 }
