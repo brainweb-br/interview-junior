@@ -45,8 +45,8 @@ class HeroControllerTest {
 
         //when
         final ResultActions resultActions = mockMvc.perform(post("/api/v1/heroes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(body));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(body));
 
         //then
         resultActions.andExpect(status().isCreated()).andExpect(header().exists("Location"));
@@ -55,12 +55,12 @@ class HeroControllerTest {
 
     private CreateHeroRequest createHeroRequest() {
         return CreateHeroRequest.builder()
-            .name("Batman")
-            .agility(5)
-            .dexterity(8)
-            .strength(6)
-            .intelligence(10)
-            .race(Race.HUMAN)
-            .build();
+                .name("Batman")
+                .agility(5)
+                .dexterity(8)
+                .strength(6)
+                .intelligence(10)
+                .race(Race.HUMAN)
+                .build();
     }
 }
