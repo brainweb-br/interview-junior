@@ -1,6 +1,6 @@
 CREATE TABLE power_stats
 (
-    id           UUID PRIMARY KEY NOT NULL DEFAULT uuid_generate_v4(),
+    id           SERIAL PRIMARY KEY,
     strength     SMALLINT         NOT NULL,
     agility      SMALLINT         NOT NULL,
     dexterity    SMALLINT         NOT NULL,

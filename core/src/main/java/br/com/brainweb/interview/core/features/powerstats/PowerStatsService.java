@@ -14,7 +14,15 @@ public class PowerStatsService {
     private final PowerStatsRepository powerStatsRepository;
 
     @Transactional
-    public UUID create(PowerStats powerStats) {
+    public Long create(PowerStats powerStats) {
         return powerStatsRepository.create(powerStats);
+    }
+
+    public Long update(PowerStats powerStats) {
+        return powerStatsRepository.update(powerStats);
+    }
+
+    public boolean delete(Long powerStatsId) {
+        return powerStatsRepository.delete(powerStatsId);
     }
 }
